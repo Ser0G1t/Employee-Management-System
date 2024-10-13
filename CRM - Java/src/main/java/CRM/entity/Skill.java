@@ -1,12 +1,26 @@
 package CRM.entity;
 
 import CRM.enums.SkillLevel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
 public class Skill extends CoreEntity{
     private String name;
     private SkillLevel skillLevel;
+    @ManyToMany
+    @JoinTable(
+            name = "employee_skill", // Nazwa tabeli łączącej
+            joinColumns = @JoinColumn(name = "skill_id"), // Kolumna w tabeli employee_skill, która odnosi się do id w Skill
+            inverseJoinColumns = @JoinColumn(name = "employee_id") // Kolumna w tabeli employee_skill, która odnosi się do id w Employee
+    )
+    private Set<Employee> employees = new HashSet<>();
     public Skill(){
 
     }

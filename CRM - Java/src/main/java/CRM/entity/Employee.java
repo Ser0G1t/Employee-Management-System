@@ -2,6 +2,8 @@ package CRM.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 import java.util.*;
 
@@ -12,6 +14,7 @@ public class Employee extends CoreEntity{
     @Column(unique = true)
     private String PESEL;
     private int age;
+    @ManyToMany(mappedBy = "employees")
     private Set<Skill> skills = new HashSet<>();
     public Employee(){
 

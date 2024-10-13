@@ -1,6 +1,7 @@
 package CRM.service;
 
 import CRM.entity.CoreEntity;
+import CRM.exceptionHandling.EntityNotFoundException;
 import CRM.repository.CoreRepository;
 
 import java.util.Optional;
@@ -11,9 +12,13 @@ abstract class CoreCrudService<T extends CoreEntity> {
         repository.save(entity);
     }
     public void delete(long id){
-        repository.deleteById(id);
+        var entity = findById(id);
+        repository.delete(entity);
+
+
     }
-    public Optional<T> findById(long id){
-        return repository.findById(id);
+    public T findById(long id){
+        return repository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Entity with this ID can't be found"));
     }
 }
