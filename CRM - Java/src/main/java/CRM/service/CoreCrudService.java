@@ -3,6 +3,8 @@ package CRM.service;
 import CRM.entity.CoreEntity;
 import CRM.repository.CoreRepository;
 
+import java.util.Optional;
+
 abstract class CoreCrudService<T extends CoreEntity> {
     private CoreRepository<T> repository;
     public void create(T entity){
@@ -10,5 +12,8 @@ abstract class CoreCrudService<T extends CoreEntity> {
     }
     public void delete(long id){
         repository.deleteById(id);
+    }
+    public Optional<T> findById(long id){
+        return repository.findById(id);
     }
 }

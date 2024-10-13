@@ -29,9 +29,12 @@ public class EmployeeCrudService {
         employee.setLastName(employee.getLastName());
         employee.setAge(employee.getAge());
     }
-    public void addNewSkill(long employeeId, long skillId){
-        Employee employee = employeeRepository.findById(employeeId)
+    public Employee findById(long employeeId){
+        return employeeRepository.findById(employeeId)
                 .orElseThrow(()-> new EntityNotFoundException("Entity (Employee) with this ID can't be found"));
+    }
+    public void addNewSkill(long employeeId, long skillId){
+        Employee employee = findById(employeeId);
         Skill skill = skillRepository.findById(skillId)
                 .orElseThrow(()-> new EntityNotFoundException("Entity (Employee) with this ID can't be found"));
         employee.addSkill(skill);
@@ -39,8 +42,7 @@ public class EmployeeCrudService {
         employeeRepository.save(employee);
     }
     public void updateSkillLevel(long employeeId, long skillId, SkillLevel level){
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(()-> new EntityNotFoundException("Entity (Employee) with this ID can't be found"));
+        Employee employee = findById(employeeId);
         Skill skill = employee.getSkill(skillId)
                 .orElseThrow(()-> new EntityNotFoundException("Entity (Skill) with this ID can't be found in Employee skills set"));
         skill.setSkillLevel(level);
