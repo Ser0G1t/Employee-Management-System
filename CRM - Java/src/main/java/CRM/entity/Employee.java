@@ -1,9 +1,6 @@
 package CRM.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.util.*;
 
@@ -14,7 +11,8 @@ public class Employee extends CoreEntity{
     @Column(unique = true)
     private String PESEL;
     private int age;
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL)
+
     private Set<Skill> skills = new HashSet<>();
     public Employee(){
 
@@ -79,11 +77,11 @@ public class Employee extends CoreEntity{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Employee employee)) return false;
-        return age == employee.age && Objects.equals(name, employee.name) && Objects.equals(lastName, employee.lastName) && Objects.equals(PESEL, employee.PESEL);
+        return age == employee.age && Objects.equals(name, employee.name) && Objects.equals(lastName, employee.lastName) && Objects.equals(PESEL, employee.PESEL) && Objects.equals(getId(), employee.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, lastName, PESEL, age);
+        return Objects.hash(name, lastName, PESEL, age, getId());
     }
 }

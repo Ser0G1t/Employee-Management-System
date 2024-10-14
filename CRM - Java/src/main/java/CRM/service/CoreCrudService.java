@@ -7,7 +7,10 @@ import CRM.repository.CoreRepository;
 import java.util.Optional;
 
 abstract class CoreCrudService<T extends CoreEntity> {
-    private CoreRepository<T> repository;
+    protected CoreRepository<T> repository;
+    public CoreCrudService(CoreRepository<T> repository){
+        this.repository=repository;
+    }
     public void create(T entity){
         repository.save(entity);
     }

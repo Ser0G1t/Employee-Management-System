@@ -1,19 +1,20 @@
 package CRM.service;
 
+import CRM.IService.IEmployeeService;
 import CRM.entity.Employee;
 import CRM.entity.Skill;
 import CRM.enums.SkillLevel;
 import CRM.exceptionHandling.EntityNotFoundException;
 import CRM.repository.EmployeeRepository;
-import CRM.repository.SkillRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmployeeCrudService extends CoreCrudService<Employee> {
+public class EmployeeCrudService extends CoreCrudService<Employee> implements IEmployeeService {
     private final EmployeeRepository employeeRepository;
     private final SkillCrudService skillService;
 
     public EmployeeCrudService(EmployeeRepository employeeRepository, SkillCrudService skillService) {
+        super(employeeRepository);
         this.employeeRepository = employeeRepository;
         this.skillService = skillService;
     }
@@ -32,7 +33,7 @@ public class EmployeeCrudService extends CoreCrudService<Employee> {
         //TODO : Check is it necessary
         employeeRepository.save(employee);
     }
-
+        // TODO : Maybe change elseThrow(EntityNotFoundException::NEW)
     public void updateSkillLevel(long employeeId, long skillId, SkillLevel level) {
         Employee employee = findById(employeeId);
         Skill skill = employee.getSkill(skillId)

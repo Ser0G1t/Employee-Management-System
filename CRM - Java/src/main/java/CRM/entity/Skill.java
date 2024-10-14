@@ -1,10 +1,7 @@
 package CRM.entity;
 
 import CRM.enums.SkillLevel;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,7 +11,7 @@ import java.util.Set;
 public class Skill extends CoreEntity{
     private String name;
     private SkillLevel skillLevel;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "employee_skill", // Nazwa tabeli łączącej
             joinColumns = @JoinColumn(name = "skill_id"), // Kolumna w tabeli employee_skill, która odnosi się do id w Skill
@@ -45,11 +42,11 @@ public class Skill extends CoreEntity{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Skill skill)) return false;
-        return Objects.equals(name, skill.name) && skillLevel == skill.skillLevel;
+        return Objects.equals(name, skill.name) && skillLevel == skill.skillLevel && Objects.equals(getId(), skill.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, skillLevel);
+        return Objects.hash(name, skillLevel, getId());
     }
 }
