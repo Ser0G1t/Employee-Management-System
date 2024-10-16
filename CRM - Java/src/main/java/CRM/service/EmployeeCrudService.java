@@ -1,15 +1,16 @@
 package CRM.service;
 
-import CRM.IService.IEmployeeService;
+import CRM.IService.IEmployeeCrudService;
 import CRM.entity.Employee;
 import CRM.entity.Skill;
 import CRM.enums.SkillLevel;
 import CRM.exceptionHandling.EntityNotFoundException;
 import CRM.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmployeeCrudService extends CoreCrudService<Employee> implements IEmployeeService {
+public class EmployeeCrudService extends CoreCrudService<Employee> implements IEmployeeCrudService {
     private final EmployeeRepository employeeRepository;
     private final SkillCrudService skillService;
 
@@ -25,15 +26,16 @@ public class EmployeeCrudService extends CoreCrudService<Employee> implements IE
         employee.setAge(employee.getAge());
         employeeRepository.save(employee);
     }
-
     public void addNewSkill(long employeeId, long skillId) {
         var employee = findById(employeeId);
+        if(employee.getSkill(skillId).isEmpty()){
+            //do obsluzenia nowy blad pod rest controller advice
+            throw new IllegalArgumentException("Employee already has skill with this ID");
+        }
         var skill = skillService.findById(skillId);
         employee.addSkill(skill);
-        //TODO : Check is it necessary
         employeeRepository.save(employee);
     }
-        // TODO : Maybe change elseThrow(EntityNotFoundException::NEW)
     public void updateSkillLevel(long employeeId, long skillId, SkillLevel level) {
         Employee employee = findById(employeeId);
         Skill skill = employee.getSkill(skillId)

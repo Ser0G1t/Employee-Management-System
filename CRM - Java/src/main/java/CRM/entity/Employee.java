@@ -11,12 +11,28 @@ public class Employee extends CoreEntity{
     @Column(unique = true)
     private String PESEL;
     private int age;
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL)
-
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "employee_skill",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
     private Set<Skill> skills = new HashSet<>();
     public Employee(){
 
     }
+    @ManyToOne(cascade = CascadeType.ALL)
+    //TODO : DO SPRAWDZENIA CZY USUNIE SIE PRACOWNIK JAKO ENCJA PRZY TYM CASCADETYPE
+    private Department department;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     public String getName() {
         return name;
     }
@@ -27,11 +43,6 @@ public class Employee extends CoreEntity{
 
     public int getAge() {
         return age;
-    }
-
-    @Override
-    public long getId() {
-        return super.getId();
     }
 
     public Set<Skill> getSkills() {

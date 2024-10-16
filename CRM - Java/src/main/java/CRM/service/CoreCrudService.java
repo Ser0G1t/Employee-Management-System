@@ -17,8 +17,6 @@ abstract class CoreCrudService<T extends CoreEntity> {
     public void delete(long id){
         var entity = findById(id);
         repository.delete(entity);
-
-
     }
     public T findById(long id){
         return repository.findById(id)
